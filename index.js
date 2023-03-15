@@ -169,8 +169,8 @@ TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
       error.code = 'ECONNRESET'
       cb(socket)
       options.request.emit('error', error) // fire up error on ClientRequest.
+      self.removeSocket(socket);
       socket.destroy();
-      self.removeSocket(placeholder)
     }
   }
 
