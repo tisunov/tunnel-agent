@@ -161,9 +161,6 @@ TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
 
     if (res.statusCode === 200) {
       //assert.equal(head.length, 0)
-      if (head.length !== 0)
-        console.log(`Tunnel: Head length non zero - ${head.length}`, head);
-
       debug('tunneling connection has established')
       cb(socket)
     } else {
@@ -172,8 +169,6 @@ TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
       error.code = 'ECONNRESET'
       cb(socket)
       options.request.emit('error', error) // fire up error on ClientRequest.
-      self.removeSocket(socket)
-      socket.destroy();
     }
   }
 
@@ -211,12 +206,6 @@ function createSecureSocket(options, cb) {
       , socket: socket
       }
     ));
-
-    secureSocket.once('error', function(err){
-      console.log(`Tunnel: TLS connection error`, err);
-      socket.destroy()
-      self.removeSocket(socket)
-    });
 
     self.sockets[self.sockets.indexOf(socket)] = secureSocket
     cb(secureSocket)
